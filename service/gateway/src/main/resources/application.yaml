@@ -1,0 +1,24 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: url-shortener-gateway-service
+
+  config:
+    import: file:.env.${spring.profiles.active}[.properties]
+
+  cloud:
+    gateway:
+      server:
+        web-flux:
+          routes:
+            - id: shortener-service
+              uri: ${shortener-service.url}
+              predicates:
+                - Path=/api/shorten/**
+
+            - id: redirect-service
+              uri: ${redirect-service.url}
+              predicates:
+                - Path=/api/redirect/**

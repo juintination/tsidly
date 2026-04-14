@@ -1,0 +1,29 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: url-redirect-service
+
+  config:
+    import: file:.env.${spring.profiles.active}[.properties]
+
+  data:
+    redis:
+      host: ${redis.host}
+      port: ${redis.port}
+
+  kafka:
+    bootstrap-servers: ${kafka.bootstrap.servers}
+    consumer:
+      group-id: ${kafka.url-shortener.consumer.group-id}
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+
+
+
+endpoints:
+  url-shortener-service:
+    url: ${shortener-service.url}
