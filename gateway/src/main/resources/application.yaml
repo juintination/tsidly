@@ -14,11 +14,11 @@ spring:
         web-flux:
           routes:
             - id: shortener-service
-              uri: ${shortener-service.url}
+              uri: ${SHORTENER_SERVICE_URL}
               predicates:
                 - Path=/api/shorten/**
 
             - id: redirect-service
-              uri: ${redirect-service.url}
+              uri: ${REDIRECT_SERVICE_URL}
               predicates:
                 - Path=/api/redirect/**

@@ -10,9 +10,9 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${db.host}:${db.port}/${tsidly.db.name}?serverTimezone=${server.time.zone}&characterEncoding=${character.encoding}
-    username: ${db.username}
-    password: ${db.password}
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${TSIDLY_DB_NAME}?serverTimezone=${SERVER_TIME_ZONE}&characterEncoding=${CHARACTER_ENCODING}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
   jpa:
     hibernate:
@@ -25,5 +25,5 @@ spring:
 
   data:
     redis:
-      host: ${redis.host}
-      port: ${redis.port}
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
