@@ -6,7 +6,7 @@ spring:
     name: url-shortener-service
 
   config:
-    import: file:.env.${spring.profiles.active}[.properties]
+    import: optional:file:.env.${spring.profiles.active}[.properties]
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

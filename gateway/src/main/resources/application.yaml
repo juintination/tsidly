@@ -6,7 +6,7 @@ spring:
     name: tsidly-gateway-service
 
   config:
-    import: file:.env.${spring.profiles.active}[.properties]
+    import: optional:file:.env.${spring.profiles.active}[.properties]
 
   cloud:
     gateway:
