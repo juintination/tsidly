@@ -97,3 +97,35 @@ kubectl port-forward deployment/gateway-deployment 8080:8080
 ```
 kubectl delete deployment gateway-deployment
 ```
+
+---
+
+## 3. Service
+
+> Service는 트래픽을 전달할 대상 Pod가 필요하며,  
+> 본 예제에서는 위 Deployment가 해당 Pod를 생성하므로 Deployment를 먼저 실행해야 함
+
+### 3.1 Service 생성
+
+```
+kubectl apply -f gateway-service.yaml
+```
+
+### 3.2 Service 확인
+
+```
+kubectl get service
+```
+
+### 3.3 외부 접근 (NodePort)
+
+```
+http://localhost:30080
+```
+
+### 3.4 삭제
+
+```
+kubectl delete service gateway-service
+```
+
