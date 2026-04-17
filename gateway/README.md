@@ -32,7 +32,13 @@ kubectl get pods
 kubectl logs gateway-pod
 ```
 
-### 6. Pod 삭제
+### 6. 포트 포워딩 (로컬에서 Pod의 8080 포트에 접근)
+
+```
+kubectl port-forward pod/gateway-pod 8080:8080
+```
+
+### 7. Pod 삭제
 
 ```
 kubectl delete pod gateway-pod
