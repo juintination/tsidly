@@ -60,14 +60,6 @@ kubectl delete pod gateway-pod
 kubectl apply -f gateway-deployment.yaml
 ```
 
-## 2. Deployment
-
-### 2.1 Deployment 생성
-
-```
-kubectl apply -f gateway-deployment.yaml
-```
-
 ### 2.2 상태 확인
 
 #### 2.2.1 Deployment 확인
