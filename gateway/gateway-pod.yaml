@@ -6,6 +6,7 @@ spec:
   containers:
     - name: gateway
       image: tsidly-gateway
+      imagePullPolicy: IfNotPresent
 
       envFrom:
         - configMapRef:
