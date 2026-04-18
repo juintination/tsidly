@@ -12,7 +12,7 @@ docker build -t tsidly-gateway .
 ### ConfigMap 생성
 ```
 kubectl create configmap gateway-config \
---from-env-file=.env.k8s \
+--from-env-file=.env.gateway \
 --dry-run=client -o yaml | kubectl apply -f -
 ```
 
@@ -128,4 +128,3 @@ http://localhost:30080
 ```
 kubectl delete service gateway-service
 ```
-
