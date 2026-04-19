@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shortener-deployment
+
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: shortener-app
+
+  template:
+    metadata:
+      labels:
+        app: shortener-app
+
+    spec:
+      containers:
+        - name: url-shortener
+          image: tsidly-shortener
+          imagePullPolicy: IfNotPresent
+
+          ports:
+            - containerPort: 8081
+
+          envFrom:
+            - configMapRef:
+                name: shortener-config
