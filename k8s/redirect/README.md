@@ -18,7 +18,7 @@ kubectl apply -f ../external/valkey/valkey-service.yaml
 ### 1.1 Docker 이미지 빌드
 
 ```
-docker build -t tsidly-redirect .
+docker build -t tsidly-redirect ../../services/redirect
 ```
 
 ---

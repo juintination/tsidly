@@ -27,7 +27,7 @@ kubectl apply -f ../external/valkey/valkey-service.yaml
 ### 1.1 Docker 이미지 빌드
 
 ```
-docker build -t tsidly-shortener .
+docker build -t tsidly-shortener ../../services/shortener
 ```
 
 ---

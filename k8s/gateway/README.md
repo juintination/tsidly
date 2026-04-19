@@ -7,7 +7,7 @@
 ### Docker 이미지 빌드
 
 ```
-docker build -t tsidly-gateway .
+docker build -t tsidly-gateway ../../services/gateway
 ```
 
 ### ConfigMap 생성
