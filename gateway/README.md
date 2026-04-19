@@ -5,11 +5,13 @@
 ## 0. 공통 준비
 
 ### Docker 이미지 빌드
+
 ```
 docker build -t tsidly-gateway .
 ```
 
 ### ConfigMap 생성
+
 ```
 kubectl create configmap gateway-config \
 --from-env-file=.env.gateway \
@@ -92,7 +94,27 @@ kubectl logs -l app=gateway-app
 kubectl port-forward deployment/gateway-deployment 8080:8080
 ```
 
-### 2.5 삭제
+### 2.5 롤아웃
+
+#### 2.5.1 재시작
+
+```
+kubectl rollout restart deployment gateway-deployment
+```
+
+#### 2.5.2 상태 확인
+
+```
+kubectl rollout status deployment gateway-deployment
+```
+
+#### 2.5.3 롤백
+
+```
+kubectl rollout undo deployment gateway-deployment
+```
+
+### 2.6 삭제
 
 ```
 kubectl delete deployment gateway-deployment
