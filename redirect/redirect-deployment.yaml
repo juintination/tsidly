@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redirect-deployment
+
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: redirect-app
+
+  template:
+    metadata:
+      labels:
+        app: redirect-app
+
+    spec:
+      containers:
+        - name: url-redirect
+          image: tsidly-redirect
+          imagePullPolicy: IfNotPresent
+
+          ports:
+            - containerPort: 8082
+
+          envFrom:
+            - configMapRef:
+                name: redirect-config
