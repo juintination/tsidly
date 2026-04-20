@@ -139,13 +139,7 @@ kubectl apply -f gateway-service.yaml
 kubectl get service
 ```
 
-### 3.3 외부 접근 (NodePort)
-
-```
-http://localhost:30080
-```
-
-### 3.4 삭제
+### 3.3 삭제
 
 ```
 kubectl delete service gateway-service
