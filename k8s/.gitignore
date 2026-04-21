@@ -1,0 +1,11 @@
+### SECRET ###
+secret.yaml
+**/secret.yaml
+
+### PEM ###
+*.pem
+**/*.pem
+
+### ALLOW ###
+!sealed-secret.yaml
+!**/sealed-secret.yaml

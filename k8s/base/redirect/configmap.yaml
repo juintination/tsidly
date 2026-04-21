@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: redirect-config
+
+data:
+  SHORTENER_SERVICE_URL: http://shortener-service
+  REDIS_HOST: valkey
+  REDIS_PORT: "6379"

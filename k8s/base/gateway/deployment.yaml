@@ -1,28 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: redirect-deployment
+  name: gateway
+  labels:
+    app: gateway
 
 spec:
-  replicas: 3
   selector:
     matchLabels:
-      app: redirect-app
+      app: gateway
 
   template:
     metadata:
       labels:
-        app: redirect-app
+        app: gateway
 
     spec:
       containers:
-        - name: url-redirect
-          image: tsidly-redirect
+        - name: gateway
+          image: tsidly/gateway
           imagePullPolicy: IfNotPresent
 
           ports:
-            - containerPort: 8082
+            - containerPort: 8080
 
           envFrom:
             - configMapRef:
-                name: redirect-config
+                name: gateway-config

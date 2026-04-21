@@ -5,7 +5,7 @@ metadata:
 
 spec:
   selector:
-    app: redirect-app
+    app: redirect
 
   ports:
     - port: 80

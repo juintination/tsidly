@@ -1,0 +1,14 @@
+### ENV ###
+.env.*
+
+### SECRET ###
+
+secret.yaml
+**/secret.yaml
+
+### EXCEPT ###
+
+!*.pem
+!**/*.pem
+!sealed-secret.yaml
+!**/sealed-secret.yaml

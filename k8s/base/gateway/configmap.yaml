@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gateway-config
+data:
+  REDIRECT_SERVICE_URL: http://redirect-service
+  SHORTENER_SERVICE_URL: http://shortener-service
