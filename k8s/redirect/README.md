@@ -7,8 +7,8 @@
 ### Valkey 실행
 
 ```
-kubectl apply -f ../external/valkey/valkey-deployment.yaml
-kubectl apply -f ../external/valkey/valkey-service.yaml
+kubectl apply -f ../infra/valkey/deployment.yaml
+kubectl apply -f ../infra/valkey/service.yaml
 ```
 
 ---
@@ -36,7 +36,7 @@ kubectl create configmap redirect-config \
 ### 1.3 Deployment 생성
 
 ```
-kubectl apply -f redirect-deployment.yaml
+kubectl apply -f deployment.yaml
 ```
 
 ---
@@ -105,7 +105,7 @@ kubectl delete deployment redirect-deployment
 ### 2.1 Service 생성
 
 ```
-kubectl apply -f redirect-service.yaml
+kubectl apply -f service.yaml
 ```
 
 ---

@@ -5,7 +5,7 @@
 ### 1. Deployment 생성
 
 ```
-kubectl apply -f valkey-deployment.yaml
+kubectl apply -f deployment.yaml
 ```
 
 ---
@@ -13,7 +13,7 @@ kubectl apply -f valkey-deployment.yaml
 ### 2. Service 생성
 
 ```
-kubectl apply -f valkey-service.yaml
+kubectl apply -f service.yaml
 ```
 
 ---
@@ -21,7 +21,7 @@ kubectl apply -f valkey-service.yaml
 ### 3. 상태 확인
 
 ```
-kubectl get pods
+kubectl get deployments
 kubectl get service
 ```
 

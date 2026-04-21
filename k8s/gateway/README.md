@@ -25,7 +25,7 @@ kubectl create configmap gateway-config \
 ### 1.1 Pod 생성
 
 ```
-kubectl apply -f gateway-pod.yaml
+kubectl apply -f pod.yaml
 ```
 
 ### 1.2 상태 확인
@@ -59,7 +59,7 @@ kubectl delete pod gateway-pod
 ### 2.1 Deployment 생성
 
 ```
-kubectl apply -f gateway-deployment.yaml
+kubectl apply -f deployment.yaml
 ```
 
 ### 2.2 상태 확인
@@ -130,7 +130,7 @@ kubectl delete deployment gateway-deployment
 ### 3.1 Service 생성
 
 ```
-kubectl apply -f gateway-service.yaml
+kubectl apply -f service.yaml
 ```
 
 ### 3.2 Service 확인

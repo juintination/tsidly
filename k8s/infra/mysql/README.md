@@ -2,6 +2,14 @@
 
 ---
 
+## 0. 사전 준비
+
+### mysql 이미지 pull
+
+```
+docker pull mysql:8
+```
+
 ### 1. Secret 생성
 
 ```
@@ -15,7 +23,7 @@ kubectl create secret generic mysql-secret \
 ### 2. StatefulSet 생성
 
 ```
-kubectl apply -f mysql-statefulset.yaml
+kubectl apply -f statefulset.yaml
 ```
 
 ---
@@ -23,7 +31,7 @@ kubectl apply -f mysql-statefulset.yaml
 ### 3. Headless Service 생성
 
 ```
-kubectl apply -f mysql-service.yaml
+kubectl apply -f service.yaml
 ```
 
 ---
@@ -31,7 +39,7 @@ kubectl apply -f mysql-service.yaml
 ### 4. 상태 확인
 
 ```
-kubectl get pods
+kubectl get statefulset
 kubectl get service
 kubectl get pvc
 ```

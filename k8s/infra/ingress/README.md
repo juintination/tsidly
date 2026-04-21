@@ -30,7 +30,7 @@ Controller Pod가 Running 상태이며 ingress class가 존재해야 한다.
 ### 1.1 적용
 
 ```
-kubectl apply -f gateway-ingress.yaml
+kubectl apply -f ingress.yaml
 ```
 
 ---
@@ -74,7 +74,7 @@ Ingress 접근 방식은 환경에 따라 달라진다.
 
 Ingress Controller가 localhost에 직접 바인딩되는 경우:
 
-```text
+```
 http://localhost/api/shorten
 http://localhost/api/redirect
 ```
