@@ -71,7 +71,9 @@ pipeline {
                         usernameVariable: 'DOCKER_USER',
                         passwordVariable: 'DOCKER_PASS'
                     )]) {
-                        sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
+                        sh '''
+                            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                        '''
 
                         if (env.GATEWAY_CHANGED == "true") {
                             sh "docker push $REGISTRY/gateway:${TAG}"
