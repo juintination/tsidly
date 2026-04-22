@@ -49,15 +49,15 @@ pipeline {
                 script {
 
                     if (env.GATEWAY_CHANGED == "true") {
-                        sh "docker build -t ${REGISTRY}/gateway:${TAG} ./services/gateway"
+                        sh "docker build -t ${REGISTRY}/tsidly:gateway-${TAG} ./services/gateway"
                     }
 
                     if (env.SHORTENER_CHANGED == "true") {
-                        sh "docker build -t ${REGISTRY}/shortener:${TAG} ./services/shortener"
+                        sh "docker build -t ${REGISTRY}/tsidly:shortener-${TAG} ./services/shortener"
                     }
 
                     if (env.REDIRECT_CHANGED == "true") {
-                        sh "docker build -t ${REGISTRY}/redirect:${TAG} ./services/redirect"
+                        sh "docker build -t ${REGISTRY}/tsidly:redirect-${TAG} ./services/redirect"
                     }
                 }
             }
@@ -78,15 +78,15 @@ pipeline {
                         '''
 
                         if (env.GATEWAY_CHANGED == "true") {
-                            sh "docker push ${REGISTRY}/gateway:${TAG}"
+                            sh "docker push ${REGISTRY}/tsidly:gateway-${TAG}"
                         }
 
                         if (env.SHORTENER_CHANGED == "true") {
-                            sh "docker push ${REGISTRY}/shortener:${TAG}"
+                            sh "docker push ${REGISTRY}/tsidly:shortener-${TAG}"
                         }
 
                         if (env.REDIRECT_CHANGED == "true") {
-                            sh "docker push ${REGISTRY}/redirect:${TAG}"
+                            sh "docker push ${REGISTRY}/tsidly:redirect-${TAG}"
                         }
 
                         sh "docker logout"
