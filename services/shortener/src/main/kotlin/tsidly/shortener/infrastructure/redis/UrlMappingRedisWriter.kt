@@ -26,6 +26,21 @@ class UrlMappingRedisWriter(
             .set(key, urlMapping.originalUrl, ttl)
     }
 
+    fun writeIfAbsent(
+        urlMapping: UrlMapping,
+        ttl: Duration,
+    ) {
+        val key = generateKey(
+            shortId = urlMapping.id!!,
+        )
+
+        val existing = redisTemplate.opsForValue().get(key)
+        if (existing == null) {
+            redisTemplate.opsForValue()
+                .set(key, urlMapping.originalUrl, ttl)
+        }
+    }
+
     private fun generateKey(
         shortId: String,
     ) = KEY_FORMAT.format(shortId)

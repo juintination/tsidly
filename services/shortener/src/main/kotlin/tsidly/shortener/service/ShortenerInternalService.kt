@@ -21,7 +21,7 @@ class ShortenerInternalService(
         val urlMapping = urlMappingRepository.findByIdOrNull(shortId)
             ?: throw NoSuchElementException("존재하지 않는 단축 URL입니다.")
 
-        urlMappingRedisWriter.write(
+        urlMappingRedisWriter.writeIfAbsent(
             urlMapping = urlMapping,
             ttl = Duration.ofHours(1),
         )
