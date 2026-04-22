@@ -66,16 +66,24 @@ pipeline {
         stage('Push Images') {
             steps {
                 script {
-                    if (env.GATEWAY_CHANGED == "true") {
-                        sh "docker push $REGISTRY/gateway:${TAG}"
-                    }
+                    withCredentials([usernamePassword(
+                        credentialsId: 'dockerhub-credentials',
+                        usernameVariable: 'DOCKER_USER',
+                        passwordVariable: 'DOCKER_PASS'
+                    )]) {
+                        sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
 
-                    if (env.SHORTENER_CHANGED == "true") {
-                        sh "docker push $REGISTRY/shortener:${TAG}"
-                    }
+                        if (env.GATEWAY_CHANGED == "true") {
+                            sh "docker push $REGISTRY/gateway:${TAG}"
+                        }
+                        if (env.SHORTENER_CHANGED == "true") {
+                            sh "docker push $REGISTRY/shortener:${TAG}"
+                        }
+                        if (env.REDIRECT_CHANGED == "true") {
+                            sh "docker push $REGISTRY/redirect:${TAG}"
+                        }
 
-                    if (env.REDIRECT_CHANGED == "true") {
-                        sh "docker push $REGISTRY/redirect:${TAG}"
+                        sh "docker logout"
                     }
                 }
             }
