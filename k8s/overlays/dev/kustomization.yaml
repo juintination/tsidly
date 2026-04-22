@@ -12,13 +12,13 @@ resources:
   - ../../secrets/dev/shortener
 
 images:
-  - name: tsidly/gateway
+  - name: kwondeokjae/tsidly-gateway
     newTag: latest
 
-  - name: tsidly/shortener
+  - name: kwondeokjae/tsidly-shortener
     newTag: latest
 
-  - name: tsidly/redirect
+  - name: kwondeokjae/tsidly-redirect
     newTag: latest
 
 patches:
