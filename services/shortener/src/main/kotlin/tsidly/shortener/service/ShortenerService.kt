@@ -19,6 +19,12 @@ class ShortenerService(
     fun shortenUrl(
         request: UrlShortenRequest,
     ): UrlMappingResponse {
+
+        val existingMapping = urlMappingRepository.findByOriginalUrl(request.originalUrl)
+        if (existingMapping != null) {
+            return UrlMappingResponse.from(existingMapping)
+        }
+
         val urlMapping = urlMappingRepository.save(
             UrlMapping.of(
                 originalUrl = request.originalUrl,
