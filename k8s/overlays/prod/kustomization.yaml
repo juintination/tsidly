@@ -11,10 +11,10 @@ resources:
   - ../../secrets/prod/shortener
 images:
   - name: kwondeokjae/tsidly-gateway
-    newTag: latest
+    newTag: prod-1
   - name: kwondeokjae/tsidly-shortener
-    newTag: latest
+    newTag: prod-1
   - name: kwondeokjae/tsidly-redirect
-    newTag: latest
+    newTag: prod-1
 patches:
   - path: patch-replicas.yaml
