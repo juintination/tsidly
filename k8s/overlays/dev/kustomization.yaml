@@ -1,6 +1,5 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-
 resources:
   - ../../base/gateway
   - ../../base/shortener
@@ -10,14 +9,12 @@ resources:
   - ../../infra/ingress
   - ../../secrets/dev/mysql
   - ../../secrets/dev/shortener
-
 images:
   - name: kwondeokjae/tsidly-gateway
-    newTag: latest
+    newTag: dev-11
   - name: kwondeokjae/tsidly-shortener
-    newTag: latest
+    newTag: dev-11
   - name: kwondeokjae/tsidly-redirect
-    newTag: latest
-
+    newTag: dev-11
 patches:
   - path: patch-replicas.yaml
