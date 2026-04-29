@@ -83,14 +83,21 @@ kubeseal --cert pub-cert.pem -o yaml < secret.yaml > sealed-secret.yaml
 ## 5. Docker 이미지 빌드
 
 ```
-docker build -t tsidly/gateway:${IMAGE_TAG} ./services/gateway
-docker build -t tsidly/shortener:${IMAGE_TAG} ./services/shortener
-docker build -t tsidly/redirect:${IMAGE_TAG} ./services/redirect
+docker build -t kwondeokjae/tsidly-gateway:${IMAGE_TAG} ./services/gateway
+docker build -t kwondeokjae/tsidly-shortener:${IMAGE_TAG} ./services/shortener
+docker build -t kwondeokjae/tsidly-redirect:${IMAGE_TAG} ./services/redirect
 ```
 
 ---
 
 ## 6. 배포
+
+모든 리소스는 overlay에 지정된 네임스페이스에 생성됩니다.
+
+| overlay | namespace    |
+|---------|-------------|
+| dev     | tsidly-dev  |
+| prod    | tsidly-prod |
 
 ### dev
 
@@ -109,38 +116,25 @@ kubectl apply -k k8s/overlays/prod
 ## 7. 상태 확인
 
 ```
-kubectl get pods
-kubectl get deployment
-kubectl get service
-kubectl get ingress
+# dev
+kubectl get pods,deployment,service,ingress -n tsidly-dev
+
+# prod
+kubectl get pods,deployment,service,ingress -n tsidly-prod
 ```
 
 ---
 
 ## 8. Ingress 접근
 
-### Docker Desktop 환경
-
-Ingress Controller가 localhost에 직접 바인딩되는 경우
+Ingress는 환경별 prefix로 라우팅됩니다.
 
 ```
-http://localhost/api/shorten
-http://localhost/api/redirect
-```
+# dev
+http://localhost/dev/api/shorten
 
----
-
-### port-forward 방식
-
-환경 독립적으로 가장 안정적인 테스트 방식
-
-```
-kubectl port-forward -n ingress-nginx service/ingress-nginx-controller 8080:80
-```
-
-```
-http://localhost:8080/api/shorten
-http://localhost:8080/api/redirect
+# prod
+http://localhost/prod/api/shorten
 ```
 
 ---
@@ -148,9 +142,15 @@ http://localhost:8080/api/redirect
 ## 9. 로그 확인
 
 ```
-kubectl logs -l app=gateway
-kubectl logs -l app=shortener
-kubectl logs -l app=redirect
+# dev
+kubectl logs -l app=gateway -n tsidly-dev
+kubectl logs -l app=shortener -n tsidly-dev
+kubectl logs -l app=redirect -n tsidly-dev
+
+# prod
+kubectl logs -l app=gateway -n tsidly-prod
+kubectl logs -l app=shortener -n tsidly-prod
+kubectl logs -l app=redirect -n tsidly-prod
 ```
 
 ---
@@ -167,7 +167,13 @@ kubectl delete -k k8s/overlays/prod
 ## 11. 롤아웃
 
 ```
-kubectl rollout restart deployment gateway
-kubectl rollout restart deployment shortener
-kubectl rollout restart deployment redirect
+# dev
+kubectl rollout restart deployment gateway -n tsidly-dev
+kubectl rollout restart deployment shortener -n tsidly-dev
+kubectl rollout restart deployment redirect -n tsidly-dev
+
+# prod
+kubectl rollout restart deployment gateway -n tsidly-prod
+kubectl rollout restart deployment shortener -n tsidly-prod
+kubectl rollout restart deployment redirect -n tsidly-prod
 ```
