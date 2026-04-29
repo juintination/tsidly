@@ -13,8 +13,11 @@ resources:
 
 images:
   - name: kwondeokjae/tsidly-gateway
+    newTag: latest
   - name: kwondeokjae/tsidly-shortener
+    newTag: latest
   - name: kwondeokjae/tsidly-redirect
+    newTag: latest
 
 patches:
   - path: patch-replicas.yaml

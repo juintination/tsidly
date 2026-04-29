@@ -94,5 +94,59 @@ pipeline {
                 }
             }
         }
+
+        stage('Update K8s Manifests') {
+            steps {
+                script {
+
+                    def changedServices = []
+                    def kustomizationDir = "k8s/overlays/${env.ENV}"
+
+                    def updateImage = { name, tag ->
+                        sh """
+                            yq eval '(.images[] | select(.name == "${name}")).newTag = "${tag}"' \
+                            -i ${kustomizationDir}/kustomization.yaml
+                        """
+                    }
+
+                    if (env.GATEWAY_CHANGED == "true") {
+                        updateImage("kwondeokjae/tsidly-gateway", env.TAG)
+                        changedServices << "gateway"
+                    }
+
+                    if (env.SHORTENER_CHANGED == "true") {
+                        updateImage("kwondeokjae/tsidly-shortener", env.TAG)
+                        changedServices << "shortener"
+                    }
+
+                    if (env.REDIRECT_CHANGED == "true") {
+                        updateImage("kwondeokjae/tsidly-redirect", env.TAG)
+                        changedServices << "redirect"
+                    }
+
+                    if (changedServices.isEmpty()) {
+                        echo "No changes detected. Skip commit."
+                        return
+                    }
+
+                    def commitMsg = "ci(${env.ENV}): update kustomize [${changedServices.join(', ')}]"
+
+                    withCredentials([usernamePassword(
+                        credentialsId: 'github-credentials',
+                        usernameVariable: 'GIT_USER',
+                        passwordVariable: 'GIT_TOKEN'
+                    )]) {
+                        sh """
+                            git config user.email "jenkins@local"
+                            git config user.name "jenkins"
+
+                            git add ${kustomizationDir}/kustomization.yaml
+                            git diff --cached --quiet || git commit -m "${commitMsg}"
+                            git push https://\${GIT_USER}:\${GIT_TOKEN}@github.com/juintination/tsidly.git HEAD:${env.BRANCH_NAME}
+                        """
+                    }
+                }
+            }
+        }
     }
 }
