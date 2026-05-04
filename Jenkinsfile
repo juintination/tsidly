@@ -61,35 +61,51 @@ pipeline {
                             docker buildx use multi-builder
                         '''
 
+                        def buildTasks = [:]
+
                         if (env.GATEWAY_CHANGED == "true") {
-                            sh """
-                                docker buildx build \
-                                    --platform linux/amd64,linux/arm64 \
-                                    -t ${REGISTRY}/tsidly-gateway:${TAG} \
-                                    --push \
-                                    ./services/gateway
-                            """
+                            buildTasks['gateway'] = {
+                                sh """
+                                    docker buildx build \
+                                        --platform linux/amd64,linux/arm64 \
+                                        -t ${REGISTRY}/tsidly-gateway:${TAG} \
+                                        --cache-from type=registry,ref=${REGISTRY}/tsidly-gateway:cache \
+                                        --cache-to   type=registry,ref=${REGISTRY}/tsidly-gateway:cache,mode=max \
+                                        --push \
+                                        ./services/gateway
+                                """
+                            }
                         }
 
                         if (env.SHORTENER_CHANGED == "true") {
-                            sh """
-                                docker buildx build \
-                                    --platform linux/amd64,linux/arm64 \
-                                    -t ${REGISTRY}/tsidly-shortener:${TAG} \
-                                    --push \
-                                    ./services/shortener
-                            """
+                            buildTasks['shortener'] = {
+                                sh """
+                                    docker buildx build \
+                                        --platform linux/amd64,linux/arm64 \
+                                        -t ${REGISTRY}/tsidly-shortener:${TAG} \
+                                        --cache-from type=registry,ref=${REGISTRY}/tsidly-shortener:cache \
+                                        --cache-to   type=registry,ref=${REGISTRY}/tsidly-shortener:cache,mode=max \
+                                        --push \
+                                        ./services/shortener
+                                """
+                            }
                         }
 
                         if (env.REDIRECT_CHANGED == "true") {
-                            sh """
-                                docker buildx build \
-                                    --platform linux/amd64,linux/arm64 \
-                                    -t ${REGISTRY}/tsidly-redirect:${TAG} \
-                                    --push \
-                                    ./services/redirect
-                            """
+                            buildTasks['redirect'] = {
+                                sh """
+                                    docker buildx build \
+                                        --platform linux/amd64,linux/arm64 \
+                                        -t ${REGISTRY}/tsidly-redirect:${TAG} \
+                                        --cache-from type=registry,ref=${REGISTRY}/tsidly-redirect:cache \
+                                        --cache-to   type=registry,ref=${REGISTRY}/tsidly-redirect:cache,mode=max \
+                                        --push \
+                                        ./services/redirect
+                                """
+                            }
                         }
+
+                        parallel buildTasks
 
                         sh "docker logout"
                     }
