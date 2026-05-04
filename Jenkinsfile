@@ -44,26 +44,7 @@ pipeline {
             }
         }
 
-        stage('Build Images') {
-            steps {
-                script {
-
-                    if (env.GATEWAY_CHANGED == "true") {
-                        sh "docker build -t ${REGISTRY}/tsidly-gateway:${TAG} ./services/gateway"
-                    }
-
-                    if (env.SHORTENER_CHANGED == "true") {
-                        sh "docker build -t ${REGISTRY}/tsidly-shortener:${TAG} ./services/shortener"
-                    }
-
-                    if (env.REDIRECT_CHANGED == "true") {
-                        sh "docker build -t ${REGISTRY}/tsidly-redirect:${TAG} ./services/redirect"
-                    }
-                }
-            }
-        }
-
-        stage('Push Images') {
+        stage('Build & Push Images') {
             steps {
                 script {
 
@@ -75,18 +56,39 @@ pipeline {
 
                         sh '''
                             echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                            docker buildx inspect multi-builder > /dev/null 2>&1 \
+                                || docker buildx create --name multi-builder --use
+                            docker buildx use multi-builder
                         '''
 
                         if (env.GATEWAY_CHANGED == "true") {
-                            sh "docker push ${REGISTRY}/tsidly-gateway:${TAG}"
+                            sh """
+                                docker buildx build \
+                                    --platform linux/amd64,linux/arm64 \
+                                    -t ${REGISTRY}/tsidly-gateway:${TAG} \
+                                    --push \
+                                    ./services/gateway
+                            """
                         }
 
                         if (env.SHORTENER_CHANGED == "true") {
-                            sh "docker push ${REGISTRY}/tsidly-shortener:${TAG}"
+                            sh """
+                                docker buildx build \
+                                    --platform linux/amd64,linux/arm64 \
+                                    -t ${REGISTRY}/tsidly-shortener:${TAG} \
+                                    --push \
+                                    ./services/shortener
+                            """
                         }
 
                         if (env.REDIRECT_CHANGED == "true") {
-                            sh "docker push ${REGISTRY}/tsidly-redirect:${TAG}"
+                            sh """
+                                docker buildx build \
+                                    --platform linux/amd64,linux/arm64 \
+                                    -t ${REGISTRY}/tsidly-redirect:${TAG} \
+                                    --push \
+                                    ./services/redirect
+                            """
                         }
 
                         sh "docker logout"
