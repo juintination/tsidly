@@ -44,7 +44,26 @@ pipeline {
             }
         }
 
-        stage('Build & Push Images') {
+        stage('Build Images') {
+            steps {
+                script {
+
+                    if (env.GATEWAY_CHANGED == "true") {
+                        sh "docker build -t ${REGISTRY}/tsidly-gateway:${TAG} ./services/gateway"
+                    }
+
+                    if (env.SHORTENER_CHANGED == "true") {
+                        sh "docker build -t ${REGISTRY}/tsidly-shortener:${TAG} ./services/shortener"
+                    }
+
+                    if (env.REDIRECT_CHANGED == "true") {
+                        sh "docker build -t ${REGISTRY}/tsidly-redirect:${TAG} ./services/redirect"
+                    }
+                }
+            }
+        }
+
+        stage('Push Images') {
             steps {
                 script {
 
@@ -56,56 +75,19 @@ pipeline {
 
                         sh '''
                             echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-                            docker buildx inspect multi-builder > /dev/null 2>&1 \
-                                || docker buildx create --name multi-builder --use
-                            docker buildx use multi-builder
                         '''
 
-                        def buildTasks = [:]
-
                         if (env.GATEWAY_CHANGED == "true") {
-                            buildTasks['gateway'] = {
-                                sh """
-                                    docker buildx build \
-                                        --platform linux/amd64,linux/arm64 \
-                                        -t ${REGISTRY}/tsidly-gateway:${TAG} \
-                                        --cache-from type=registry,ref=${REGISTRY}/tsidly-gateway:cache \
-                                        --cache-to   type=registry,ref=${REGISTRY}/tsidly-gateway:cache,mode=max \
-                                        --push \
-                                        ./services/gateway
-                                """
-                            }
+                            sh "docker push ${REGISTRY}/tsidly-gateway:${TAG}"
                         }
 
                         if (env.SHORTENER_CHANGED == "true") {
-                            buildTasks['shortener'] = {
-                                sh """
-                                    docker buildx build \
-                                        --platform linux/amd64,linux/arm64 \
-                                        -t ${REGISTRY}/tsidly-shortener:${TAG} \
-                                        --cache-from type=registry,ref=${REGISTRY}/tsidly-shortener:cache \
-                                        --cache-to   type=registry,ref=${REGISTRY}/tsidly-shortener:cache,mode=max \
-                                        --push \
-                                        ./services/shortener
-                                """
-                            }
+                            sh "docker push ${REGISTRY}/tsidly-shortener:${TAG}"
                         }
 
                         if (env.REDIRECT_CHANGED == "true") {
-                            buildTasks['redirect'] = {
-                                sh """
-                                    docker buildx build \
-                                        --platform linux/amd64,linux/arm64 \
-                                        -t ${REGISTRY}/tsidly-redirect:${TAG} \
-                                        --cache-from type=registry,ref=${REGISTRY}/tsidly-redirect:cache \
-                                        --cache-to   type=registry,ref=${REGISTRY}/tsidly-redirect:cache,mode=max \
-                                        --push \
-                                        ./services/redirect
-                                """
-                            }
+                            sh "docker push ${REGISTRY}/tsidly-redirect:${TAG}"
                         }
-
-                        parallel buildTasks
 
                         sh "docker logout"
                     }
