@@ -13,11 +13,8 @@ resources:
   - ../../secrets/dev/shortener
 images:
   - name: kwondeokjae/tsidly-gateway
-    newTag: dev-11
   - name: kwondeokjae/tsidly-shortener
-    newTag: dev-11
   - name: kwondeokjae/tsidly-redirect
-    newTag: dev-11
 patches:
   - path: patch-replicas.yaml
   - path: patch-ingress.yaml
