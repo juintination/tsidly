@@ -22,3 +22,13 @@ spring:
               uri: ${REDIRECT_SERVICE_URL}
               predicates:
                 - Path=/api/redirect/**
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      probes:
+        enabled: true
