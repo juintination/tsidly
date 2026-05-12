@@ -67,13 +67,6 @@ usermod -aG docker jenkins
 chmod 666 /var/run/docker.sock
 ```
 
-### yq 설치
-
-```
-curl -sSL https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 \
-  -o /usr/local/bin/yq && chmod +x /usr/local/bin/yq
-```
-
 ### 컨테이너에서 나가기
 
 ```
